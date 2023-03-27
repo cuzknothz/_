@@ -6,6 +6,7 @@ import extension from "@theatre/r3f/dist/extension";
 import studio from "@theatre/studio";
 import { Inter } from "next/font/google";
 import { SheetProvider, editable as e, PerspectiveCamera } from "@theatre/r3f";
+import { Background } from "@/components/Bg";
 
 if (process.env.NODE_ENV === "development") {
   studio.initialize();
@@ -22,6 +23,7 @@ export default function Home() {
       className="[&__canvas]:!w-screen [&__canvas]:!h-screen"
       gl={{ preserveDrawingBuffer: true }}
     >
+      <Background />
       <SheetProvider sheet={demoSheet}>
         <PerspectiveCamera
           theatreKey="Camera"
