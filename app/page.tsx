@@ -7,8 +7,10 @@ import studio from "@theatre/studio";
 import { Inter } from "next/font/google";
 import { SheetProvider, editable as e, PerspectiveCamera } from "@theatre/r3f";
 
-studio.initialize();
-studio.extend(extension);
+if (process.env.NODE_ENV === "development") {
+  studio.initialize();
+  studio.extend(extension);
+}
 
 const inter = Inter({ subsets: ["latin"] });
 
