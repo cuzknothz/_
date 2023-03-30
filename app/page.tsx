@@ -7,7 +7,8 @@ import studio from "@theatre/studio";
 import { Inter } from "next/font/google";
 import { SheetProvider, editable as e, PerspectiveCamera } from "@theatre/r3f";
 import { Background } from "@/components/Bg";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 if (process.env.NODE_ENV === "development") {
   studio.initialize();
@@ -19,18 +20,26 @@ const inter = Inter({ subsets: ["latin"] });
 const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
 
 const Box = () => {
-  const cubeRef = useRef<THREE.Mesh>();
-  useFrame(({ clock }) => {
-    cubeRef.current!.rotation.x = clock.getElapsedTime();
-    cubeRef.current!.rotation.y = clock.getElapsedTime();
+  const boxRef = useRef<THREE.Mesh>();
 
-  });
+  useEffect(() => {
+    // setTimeout(() => {
+    //   boxRef.current!.position.set(1, 3, 7);
+    // }, 5000);
+    // console.log("BOXREF", boxRef.current!.position.set(1, 3, 7));
+  }, []);
   return (
     <>
-      <e.mesh ref={cubeRef} theatreKey="cube" >
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="orange" />
-      </e.mesh>
+      <group>
+        <e.mesh ref={boxRef} theatreKey="hehe" position={[1, 2, 5]}>
+          <boxGeometry args={[2, 1, 1]} />
+          <meshBasicMaterial color={"yellow"} />
+        </e.mesh>
+        <e.mesh ref={boxRef} theatreKey="hll" position={[5, 6, 5]}>
+          <boxGeometry args={[2, 1, 1]} />
+          <meshBasicMaterial color={"yellow"} />
+        </e.mesh>
+      </group>
     </>
   );
 };
@@ -47,12 +56,12 @@ export default function Home() {
           theatreKey="Camera"
           makeDefault
           position={[5, 5, -5]}
-          fov={75}
+          fov={60}
           attachArray={undefined}
           attachObject={undefined}
           attachFns={undefined}
+          lookAt={[1, 2, 5]}
         />
-
         <ambientLight />
         <e.pointLight position={[10, 10, 10]} theatreKey="pointLight" />
         <Box />
