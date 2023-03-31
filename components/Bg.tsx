@@ -7,8 +7,8 @@ export const Background = () => {
       <boxGeometry args={[1, 1, 1]} />
       <LayerMaterial side={THREE.BackSide}>
         <Depth
-          colorB="red"
-          colorA="skyblue"
+          colorB="#fff"
+          colorA="black"
           alpha={1}
           mode="normal"
           near={130}
