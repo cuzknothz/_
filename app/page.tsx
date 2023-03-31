@@ -6,7 +6,7 @@ import extension from "@theatre/r3f/dist/extension";
 import studio from "@theatre/studio";
 import { Inter } from "next/font/google";
 import { SheetProvider, editable as e, PerspectiveCamera } from "@theatre/r3f";
-import { Background } from "@/components/Bg";
+import { Background } from "@/components/Background";
 import { OverLay } from "@/components/OverLay";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
