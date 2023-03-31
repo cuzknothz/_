@@ -7,9 +7,10 @@ import studio from "@theatre/studio";
 import { Inter } from "next/font/google";
 import { SheetProvider, editable as e, PerspectiveCamera } from "@theatre/r3f";
 import { Background } from "@/components/Bg";
+import { OverLay } from "@/components/OverLay";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { gsap } from 'gsap';
+import { gsap } from "gsap";
 
 if (process.env.NODE_ENV === "development") {
   studio.initialize();
@@ -24,19 +25,26 @@ const Box = () => {
   const boxRef = useRef<THREE.Mesh>();
   const boxRef2 = useRef<THREE.Mesh>();
 
-  
+  useFrame(({ clock }) => {
+    gsap.to(boxRef.current!.position, {
+      duration: 1,
+      delay: 2,
+      x: Math.random() * 10,
+      y: Math.random() * 10,
+    });
+  });
 
   useEffect(() => {
-    gsap.to(boxRef.current!.position,{
-      duration:1,
-      delay:2,
-      x:2,
-    })
-    gsap.to(boxRef2.current!.position,{
-      duration:1,
-      delay:1,
-      x:4,
-    })
+    // gsap.to(boxRef.current!.position, {
+    //   duration: 1,
+    //   delay: 2,
+    //   x: 2,
+    // });
+    // gsap.to(boxRef2.current!.position, {
+    //   duration: 1,
+    //   delay: 1,
+    //   x: 4,
+    // });
   }, []);
   return (
     <>
@@ -55,7 +63,7 @@ const Box = () => {
 };
 
 const Camera_ = () => {
-  const ref = useRef<THREE.Camera>()
+  const ref = useRef<THREE.Camera>();
 
   // useFrame(({clock})=>{
   //   ref.current!.position.x = Math.sin(clock.getElapsedTime()) * 100;
@@ -65,7 +73,7 @@ const Camera_ = () => {
     <PerspectiveCamera
       theatreKey="Camera"
       ref={ref}
-      makeDefault 
+      makeDefault
       position={[5, 5, -5]}
       fov={60}
       attachArray={undefined}
@@ -78,18 +86,20 @@ const Camera_ = () => {
 
 export default function Home() {
   return (
-    <Canvas
-      className="[&__canvas]:!w-screen [&__canvas]:!h-screen"
-      gl={{ preserveDrawingBuffer: true }}
-    >
-      
-      <Background />
-      <SheetProvider sheet={demoSheet}>
-      <Camera_ />
-        <ambientLight />
-        <e.pointLight position={[10, 10, 10]} theatreKey="pointLight" />
-        <Box />
-      </SheetProvider>
-    </Canvas>
+    <>
+      <Canvas
+        className="[&__canvas]:!w-screen [&__canvas]:!h-screen"
+        gl={{ preserveDrawingBuffer: true }}
+      >
+        <Background />
+        <SheetProvider sheet={demoSheet}>
+          <Camera_ />
+          <ambientLight />
+          <e.pointLight position={[10, 10, 10]} theatreKey="pointLight" />
+          <Box />
+        </SheetProvider>
+      </Canvas>
+      <OverLay />
+    </>
   );
 }
