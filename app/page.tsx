@@ -1,16 +1,17 @@
 "use client";
 
+import { Background } from "@/components/Background";
+import { OverLay } from "@/components/OverLay";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { getProject } from "@theatre/core";
+import { PerspectiveCamera, SheetProvider, editable as e } from "@theatre/r3f";
 import extension from "@theatre/r3f/dist/extension";
 import studio from "@theatre/studio";
 import { Inter } from "next/font/google";
-import { SheetProvider, editable as e, PerspectiveCamera } from "@theatre/r3f";
-import { Background } from "@/components/Background";
-import { OverLay } from "@/components/OverLay";
-import { useEffect, useRef } from "react";
+import { useMemo, useRef } from "react";
+import { useMousePosition } from "react-haiku";
+import { useWindowSize } from "react-use";
 import * as THREE from "three";
-import { gsap } from "gsap";
 
 if (process.env.NODE_ENV === "development") {
   studio.initialize();
@@ -25,27 +26,27 @@ const Box = () => {
   const boxRef = useRef<THREE.Mesh>();
   const boxRef2 = useRef<THREE.Mesh>();
 
-  useFrame(({ clock }) => {
-    gsap.to(boxRef.current!.position, {
-      duration: 1,
-      delay: 2,
-      x: Math.random() * 10,
-      y: Math.random() * 10,
-    });
-  });
+  // useFrame(({ clock }) => {
+  //   gsap.to(boxRef.current!.position, {
+  //     duration: 1,
+  //     delay: 2,
+  //     x: Math.random() * 10,
+  //     y: Math.random() * 10,
+  //   });
+  // });
 
-  useEffect(() => {
-    // gsap.to(boxRef.current!.position, {
-    //   duration: 1,
-    //   delay: 2,
-    //   x: 2,
-    // });
-    // gsap.to(boxRef2.current!.position, {
-    //   duration: 1,
-    //   delay: 1,
-    //   x: 4,
-    // });
-  }, []);
+  // useEffect(() => {
+  //   // gsap.to(boxRef.current!.position, {
+  //   //   duration: 1,
+  //   //   delay: 2,
+  //   //   x: 2,
+  //   // });
+  //   // gsap.to(boxRef2.current!.position, {
+  //   //   duration: 1,
+  //   //   delay: 1,
+  //   //   x: 4,
+  //   // });
+  // }, []);
   return (
     <>
       <group>
@@ -64,17 +65,21 @@ const Box = () => {
 
 const Camera_ = () => {
   const ref = useRef<THREE.Camera>();
+  const { x, y } = useMousePosition();
+  const { width, height } = useWindowSize();
 
-  // useFrame(({clock})=>{
-  //   ref.current!.position.x = Math.sin(clock.getElapsedTime()) * 100;
-  //   ref.current!.position.y = Math.cos(clock.getElapsedTime()) * 100;
-  // })
+  const _x = useMemo(() => x / width - 0.5, [width, x]);
+  const _y = useMemo(() => y / height - 0.5, [height, y]);
+
+  useFrame(({ clock }) => {
+    ref.current!.position.x = _x;
+    ref.current!.position.y = _y;
+  });
   return (
     <PerspectiveCamera
       theatreKey="Camera"
       ref={ref}
       makeDefault
-      position={[5, 5, -5]}
       fov={60}
       attachArray={undefined}
       attachObject={undefined}
