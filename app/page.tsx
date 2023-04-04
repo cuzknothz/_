@@ -2,6 +2,7 @@
 
 import { Background } from "@/components/Background";
 import { OverLay } from "@/components/OverLay";
+import { useTexture } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { getProject } from "@theatre/core";
 import { PerspectiveCamera, SheetProvider, editable as e } from "@theatre/r3f";
@@ -22,9 +23,17 @@ const inter = Inter({ subsets: ["latin"] });
 
 const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
 
+const vertices = new Float32Array([
+  0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+
+  1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+]);
+
 const Box = () => {
   const boxRef = useRef<THREE.Mesh>();
   const boxRef2 = useRef<THREE.Mesh>();
+
+  const texture = useTexture("/unnamed.jpg");
 
   // useFrame(({ clock }) => {
   //   gsap.to(boxRef.current!.position, {
@@ -50,13 +59,9 @@ const Box = () => {
   return (
     <>
       <group>
-        <e.mesh ref={boxRef} theatreKey="hehe" position={[1, 2, 5]}>
-          <boxGeometry args={[2, 1, 1]} />
-          <meshBasicMaterial color={"purple"} />
-        </e.mesh>
-        <e.mesh ref={boxRef2} theatreKey="hll" position={[5, 6, 5]}>
-          <boxGeometry args={[2, 1, 1]} />
-          <meshBasicMaterial color={"yellow"} />
+        <e.mesh theatreKey="hehe" position={[1, 2, 5]}>
+          <boxBufferGeometry />
+          <meshStandardMaterial attach="material" map={texture} />
         </e.mesh>
       </group>
     </>
@@ -72,8 +77,8 @@ const Camera_ = () => {
   const _y = useMemo(() => y / height - 0.5, [height, y]);
 
   useFrame(({ clock }) => {
-    ref.current!.position.x = _x;
-    ref.current!.position.y = _y;
+    // ref.current!.position.x = _x;
+    // ref.current!.position.y = _y;
   });
   return (
     <PerspectiveCamera
