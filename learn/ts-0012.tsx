@@ -1,10 +1,16 @@
-import { MouseEventHandler, FocusEventHandler, FormEventHandler } from "react";
+import {
+  MouseEventHandler,
+  FocusEventHandler,
+  FormEventHandler,
+  ReactNode,
+} from "react";
 
 interface ComponentProps {
   onClick: MouseEventHandler;
   onFocus: FocusEventHandler;
   onBlur: FocusEventHandler;
   onChange: FormEventHandler;
+  children: ReactNode;
 }
 
 const Component = (props: ComponentProps) => {
@@ -18,6 +24,8 @@ const App = () => {
       onBlur={(e) => {}}
       onChange={(e) => {}}
       onFocus={(e) => {}}
-    />
+    >
+      children
+    </Component>
   );
 };
