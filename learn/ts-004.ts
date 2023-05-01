@@ -8,5 +8,5 @@ getValByKey(
     b: "dlkfal",
     c: 2,
   },
-  "b"
+  "c"
 );
